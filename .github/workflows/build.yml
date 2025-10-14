@@ -1,0 +1,62 @@
+name: Build & Push linux-base images
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'ubuntu-22.04/**'
+      - 'ubuntu-24.04/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+  schedule:
+    # Weekly rebuild on Mondays at 3:17 AM UTC
+    - cron: "17 3 * * 1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write   # allows pushing to GHCR with GITHUB_TOKEN
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dir: ubuntu-22.04
+            lts_tag: "22.04"
+          - dir: ubuntu-24.04
+            lts_tag: "24.04"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/ubuntu-base
+          tags: |
+            type=raw,value=${{ matrix.lts_tag }}
+          labels: |
+            org.opencontainers.image.title=ubuntu-base
+            org.opencontainers.image.description=Lean Ubuntu ${{ matrix.lts_tag }} LTS base for runtime containers
+            org.opencontainers.image.vendor=Eclipse Consulting, Inc.
+            org.opencontainers.image.licenses=MIT
+
+      - name: Build & Push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./${{ matrix.dir }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
