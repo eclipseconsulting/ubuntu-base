@@ -1,6 +1,6 @@
 # Ubuntu Base Images
 
-[![Build & Push](https://github.com/eclipseconsulting/ubuntu-base/actions/workflows/build.yml/badge.svg)](https://github.com/eclipseconsulting/ubuntu-base/actions/workflows/build.yml)
+[![Build and Publish](https://github.com/eclipseconsulting/ubuntu-base/actions/workflows/build.yml/badge.svg)](https://github.com/eclipseconsulting/ubuntu-base/actions/workflows/build.yml)
 
 Lean Ubuntu LTS base images for runtime containers, published to GitHub Container Registry.
 

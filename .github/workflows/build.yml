@@ -1,4 +1,4 @@
-name: Build & Push linux-base images
+name: Build & Publish linux-base images
 
 on:
   push:

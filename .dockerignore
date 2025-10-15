@@ -1,5 +1,3 @@
-.git
-.github
-**/.DS_Store
-*.iml
-/.idea/
+# Ignore everything except Dockerfile
+*
+!Dockerfile
