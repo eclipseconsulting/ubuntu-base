@@ -8,6 +8,7 @@ Lean Ubuntu LTS base images for runtime containers, published to GitHub Containe
 
 - `ghcr.io/eclipseconsulting/ubuntu-base:22.04` - Ubuntu 22.04 LTS
 - `ghcr.io/eclipseconsulting/ubuntu-base:24.04` - Ubuntu 24.04 LTS
+- `ghcr.io/eclipseconsulting/ubuntu-base:26.04` - Ubuntu 26.04 LTS
 
 **Architectures:** `linux/amd64`, `linux/arm64`
 
@@ -47,6 +48,12 @@ Images are automatically rebuilt:
 - On changes to Dockerfiles
 
 ## Build the Image 
+
+```shell
+# Test Ubuntu 26.04
+cd ubuntu-26.04
+docker build -t ubuntu-base:26.04-test .
+```
 
 ```shell
 # Test Ubuntu 24.04
